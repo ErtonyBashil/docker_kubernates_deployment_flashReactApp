@@ -1,0 +1,12 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfig
+  namespace: cluster
+data:
+  db_name: "ml-project"
+  flask_env: "development"
+  url_backend: "http://backend:500" 
+  chokidar: "true"
+  url_service: "db:3306"
