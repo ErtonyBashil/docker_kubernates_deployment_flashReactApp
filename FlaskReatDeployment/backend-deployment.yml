@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: cluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: ertony/backend-ml_project:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MYSQL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: myconfig
+              key: url_service
+        - name: MYSQL_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: myconfig
+              key: db_name
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: secret-login
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secret-login
+              key: MYSQL_PASSWORD
+        - name: FLASK_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: myconfig
+              key: flask_env
